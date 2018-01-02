@@ -19,14 +19,14 @@
         <hr>
         <div>
           <ul class="restaurantItems" data-bind="foreach: filterrestaraunts">
-            <li><div class="restaurantContainer"><span data-bind="click: $parent.selectRes, text: title"></span></li>
-            </div>
+            <li><div class="restaurantContainer"><span data-bind="click: $parent.selectRes, text: title"></span></div>
+            </li>
           </ul>
         </div>
 
       <div id="map"></div>
     </div>
-
+  </div>
     <script src="js/library/jquery.min.js"></script>
     <script src="js/library/knockout-3.2.0.js"></script>
     <script src="js/app.js"></script>
