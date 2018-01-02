@@ -13,14 +13,14 @@ input {
   font-size: 12px;
 }
 h1 {
-  color: #FFFFFF;
+  color: #00008B;
   font-size: 28px;
   margin: 0 0 10px 0;
   text-align: center;
   text-decoration: underline;
 }
 hr {
-  background: #D0D7D9;
+  background: #00008B;
   height: 1px;
   margin: 20px 0 20px 0;
   border: none;
@@ -33,7 +33,7 @@ hr {
   right: 0px;
 }
 .options-box {
-  background: #000000;
+  background: #B0E0E6;
   border: 1px solid #999;
   border-radius: 3px;
   height: 100%;
@@ -42,7 +42,6 @@ hr {
   text-align: center;
   width: 340px;
   font-weight: bold;
-  color: #FFFFFF;
 }
 #pano {
   width: 200px;
@@ -77,6 +76,6 @@ input[type=text]:focus {
  color: #FFFFFF;
 }
 
-#restaurantList {
+#restaurantsList {
   display: inline-block;
 }

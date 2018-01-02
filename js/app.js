@@ -14,7 +14,7 @@ var restaraunts = [
 
 function restaurantData(data) {
     this.title = data.title;
-    this.restaurant = data.restaurant;
+    this.restaurants = data.restaurants;
 }
 
   function initMap() {
@@ -214,14 +214,14 @@ var myModel = function() {
     self.filterInput(title);
   }
 
-  this.currentLoc = ko.observable(self.restarauntsList()[0]);
+  this.currentRes = ko.observable(self.restarauntsList()[0]);
 
-  this.selectLoc = function(clickLoc) {
-    self.currentLoc(clickLoc);
+  this.selectRes = function(clickRes) {
+    self.currentRes(clickRes);
     this.markers = markers;
     for (var i = 0; i < this.markers.length; i++) {
       var currentMarker = this.markers[i];
-      if (currentMarker.title == clickLoc.title) {
+      if (currentMarker.title == clickRes.title) {
         google.maps.event.trigger(this.markers[i], 'click');
       }
     };
@@ -249,8 +249,8 @@ var myModel = function() {
           this.markers[i].setVisible(false);
         }
       }
-      return ko.utils.arrayFilter(self.restarauntsList(), function(locs) {
-        return locs.title.toLowerCase().includes(self.filterInput().toLowerCase());
+      return ko.utils.arrayFilter(self.restarauntsList(), function(rests) {
+        return rests.title.toLowerCase().includes(self.filterInput().toLowerCase());
       })
     }
   }, this);

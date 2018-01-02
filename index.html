@@ -17,9 +17,11 @@
           </div>
         </div>
         <hr>
-        <div class="restaurantItems" data-bind="foreach: filterrestaraunts">
-          <ul><div class="restaurantContainer"><span data-bind="click: $parent.selectLoc, text: title"></span></ul>
-          </div>
+        <div>
+          <ul class="restaurantItems" data-bind="foreach: filterrestaraunts">
+            <li><div class="restaurantContainer"><span data-bind="click: $parent.selectRes, text: title"></span></li>
+            </div>
+          </ul>
         </div>
 
       <div id="map"></div>
