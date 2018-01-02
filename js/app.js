@@ -3,7 +3,7 @@ var markers = [];
 var contentString = ''
 
 
-var restaraunts = [
+var restaurants = [
     {title: 'Zias Restaurant & Catering', location: {lat: 38.615733, lng: -90.274971}},
     {title: 'Charlie Gittos On the Hill', location: {lat: 38.617968, lng: -90.273455}},
     {title: 'Gioias Deli', location: {lat: 38.617385, lng: -90.276820}},
@@ -114,6 +114,9 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i
     });
+    
+    restaurants[i].marker = marker;
+    wikiLink(restaurants[i]);
     // Push the marker to our array of markers.
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
@@ -135,7 +138,22 @@ function restaurantData(data) {
     });
   }
 
-
+  // Function to load more information about current restaurant
+  function wikiLink(restaurants) {
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + title + '&limit=1&format=json&callback=wikiCallback';
+    $.ajax({
+                url: wikiUrl,
+                dataType: "jsonp",
+                success: function(response) {
+                  console.log(response);
+                  var url = response[3][0];
+                  console.log(url);
+                  restaurants.marker.wikiurl = url;
+                  console.log(restaurants.url);
+              }
+           });
+          }
+      }
 
 
 function populateInfoWindow(marker, infowindow) {
@@ -158,7 +176,7 @@ function populateInfoWindow(marker, infowindow) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = google.maps.geometry.spherical.computeHeading(
           nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.wikiurl + '> Click Here for More Info </a></div>');
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
