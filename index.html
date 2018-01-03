@@ -18,7 +18,7 @@
         </div>
         <hr>
         <div>
-          <ul class="restaurantItems" data-bind="foreach: filterrestaraunts">
+          <ul class="restaurantItems" data-bind="foreach: filterrestaurants">
             <li><div><span data-bind="click: $parent.selectRes, text: title"></span></div>
             </li>
           </ul>
@@ -27,8 +27,9 @@
       <div id="map"></div>
     </div>
   </div>
-    <script src="js/library/jquery.min.js"></script>
-    <script src="js/library/knockout-3.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
+    <script src="js/oauth-signature.min.js"></script>
     <script src="js/app.js"></script>
 
     <script async defer

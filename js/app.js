@@ -101,10 +101,10 @@ function restaurantData(data) {
 
     var highlightedIcon = makeMarkerIcon('FFFF24');
   // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < restaraunts.length; i++) {
+  for (var i = 0; i < restaurants.length; i++) {
     // Get the position from the location array.
-    var position = restaraunts[i].location;
-    var title = restaraunts[i].title;
+    var position = restaurants[i].location;
+    var title = restaurants[i].title;
 
     // Create a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
@@ -114,9 +114,9 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i
     });
-    
+
     restaurants[i].marker = marker;
-    wikiLink(restaurants[i]);
+
     // Push the marker to our array of markers.
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
@@ -138,23 +138,48 @@ function restaurantData(data) {
     });
   }
 
-  // Function to load more information about current restaurant
-  function wikiLink(restaurants) {
-    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + title + '&limit=1&format=json&callback=wikiCallback';
-    $.ajax({
-                url: wikiUrl,
-                dataType: "jsonp",
-                success: function(response) {
-                  console.log(response);
-                  var url = response[3][0];
-                  console.log(url);
-                  restaurants.marker.wikiurl = url;
-                  console.log(restaurants.url);
-              }
-           });
+   // YELP API AUTHENTICATION
+   function nonce_generate() {
+              return (Math.floor(Math.random() * 1e12).toString());
           }
-      }
+          // The search term URL. In this instance I am using the restaurant title
+          var yelp_url = 'https://api.yelp.com/v2/search?term=' + title;
 
+          // Here are my Yelp keys.
+          var YELP_KEY = '1vNd0FiEgaibJNLuVDnw_w',
+              YELP_TOKEN = 'DuYpZAgUoaZ6fwU2c7cOPaOEQcCEfUucXd30ddh4aB5xbDiunSmH3b0XWLpRwuyJ',
+
+          var parameters = {
+              oauth_consumer_key: YELP_KEY,
+              oauth_token: YELP_TOKEN,
+              oauth_nonce: nonce_generate(),
+              oauth_timestamp: Math.floor(Date.now() / 1000),
+              oauth_signature_method: 'HMAC-SHA1',
+              oauth_version: '1.0',
+              callback: 'cb',
+              // This is crucial to include for jsonp implementation in AJAX
+              //  or else the oauth-signature will be wrong.
+              term: 'restaurants',
+              location: 'Saint+Louis+Missouri+USA',
+          };
+
+   // Yelp settings.
+               var settings = {
+                   url: yelp_url,
+                   data: parameters,
+                   cache: true,
+                   // This is crucial to include as well to prevent jQuery from adding
+
+                   dataType: 'jsonp',
+
+                   success: function(results) {
+                       // Setup variables for Yelp specific results
+                       var yelp
+                                              // Open the infowindow and load the layout
+                       restaurantInfoWindow.open(map, marker);
+                       restaurantInfoWindow.setContent(contentString);
+   };
+ }
 
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
@@ -176,7 +201,7 @@ function populateInfoWindow(marker, infowindow) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = google.maps.geometry.spherical.computeHeading(
           nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.wikiurl + '> Wikipedia Information </a></div>');
+          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Yelp Information </a></div>');
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
@@ -205,8 +230,8 @@ function populateInfoWindow(marker, infowindow) {
     markers[i].setMap(map);
     bounds.extend(markers[i].position);
   }
-  map.fitBounds(bounds);
-}
+  map.fitBounds(bounds);}
+
 
 function makeMarkerIcon(markerColor) {
   var markerImage = new google.maps.MarkerImage(
@@ -224,7 +249,7 @@ var myModel = function() {
 
   this.markers = markers;
 
-  this.restarauntsList = ko.observableArray([]);
+  this.restaurantsList = ko.observableArray([]);
 
   this.filterInput = ko.observable();
 
@@ -232,7 +257,7 @@ var myModel = function() {
     self.filterInput(title);
   }
 
-  this.currentRes = ko.observable(self.restarauntsList()[0]);
+  this.currentRes = ko.observable(self.restaurantsList()[0]);
 
   this.selectRes = function(clickRes) {
     self.currentRes(clickRes);
@@ -245,17 +270,17 @@ var myModel = function() {
     };
   }
 
-  restaraunts.forEach(function(restaurantItem) {
-    self.restarauntsList.push(new restaurantData(restaurantItem));
+  restaurants.forEach(function(restaurantItem) {
+    self.restaurantsList.push(new restaurantData(restaurantItem));
   });
 
   //ko computed to filter location list on text input
-  self.filterrestaraunts = ko.computed(function() {
+  self.filterrestaurants = ko.computed(function() {
     if (!self.filterInput()) {
       for (i = 0; i < this.markers.length; i++) {
         this.markers[i].setVisible(true);
       };
-      return self.restarauntsList();
+      return self.restaurantsList();
     } else {
       var updatedMarkers = [];
       for (var i = 0; i < this.markers.length; i++) {
@@ -267,7 +292,7 @@ var myModel = function() {
           this.markers[i].setVisible(false);
         }
       }
-      return ko.utils.arrayFilter(self.restarauntsList(), function(rests) {
+      return ko.utils.arrayFilter(self.restaurantsList(), function(rests) {
         return rests.title.toLowerCase().includes(self.filterInput().toLowerCase());
       })
     }

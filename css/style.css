@@ -39,7 +39,7 @@ hr {
   height: 100%;
   line-height: 35px;
   padding: 10px 10px 30px 10px;
-  text-align: center;
+  text-align: left;
   width: 340px;
   font-weight: bold;
 }
@@ -53,6 +53,7 @@ hr {
 .filterSect {
   padding-left: 10px;
   padding-top: 10px;
+  text-align: center;
 }
 
 input[type=text] {
