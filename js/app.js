@@ -150,8 +150,6 @@ function restaurantData(data) {
   //          async: true,
   //          success: function(data) {
   //              console.log(data.response);
-  //              console.log(data.response.venue.name);
-  //              console.log(data.response.venue.location.formattedAddress);
   //            }
   //    });
 
