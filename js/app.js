@@ -138,48 +138,22 @@ function restaurantData(data) {
     });
   }
 
-   // YELP API AUTHENTICATION
-   function nonce_generate() {
-              return (Math.floor(Math.random() * 1e12).toString());
-          }
-          // The search term URL. In this instance I am using the restaurant title
-          var yelp_url = 'https://api.yelp.com/v2/search?term=' + title;
+  //  Foursquare Info
 
-          // Here are my Yelp keys.
-          var YELP_KEY = '1vNd0FiEgaibJNLuVDnw_w',
-              YELP_TOKEN = 'DuYpZAgUoaZ6fwU2c7cOPaOEQcCEfUucXd30ddh4aB5xbDiunSmH3b0XWLpRwuyJ',
-
-          var parameters = {
-              oauth_consumer_key: YELP_KEY,
-              oauth_token: YELP_TOKEN,
-              oauth_nonce: nonce_generate(),
-              oauth_timestamp: Math.floor(Date.now() / 1000),
-              oauth_signature_method: 'HMAC-SHA1',
-              oauth_version: '1.0',
-              callback: 'cb',
-              // This is crucial to include for jsonp implementation in AJAX
-              //  or else the oauth-signature will be wrong.
-              term: 'restaurants',
-              location: 'Saint+Louis+Missouri+USA',
-          };
-
-   // Yelp settings.
-               var settings = {
-                   url: yelp_url,
-                   data: parameters,
-                   cache: true,
-                   // This is crucial to include as well to prevent jQuery from adding
-
-                   dataType: 'jsonp',
-
-                   success: function(results) {
-                       // Setup variables for Yelp specific results
-                       var yelp
-                                              // Open the infowindow and load the layout
-                       restaurantInfoWindow.open(map, marker);
-                       restaurantInfoWindow.setContent(contentString);
-   };
- }
+  //  var clientID = '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
+  //  var    clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40',
+  //  $.ajax({
+  //          type: "GET",
+  //          dataType: 'json',
+  //          cache: false,
+  //          url: 'https://api.foursquare.com/v2/venues/' + restaurants.name + CLIENT_ID_Foursquare + CLIENT_SECRET_Foursquare + '&v=20130815',
+  //          async: true,
+  //          success: function(data) {
+  //              console.log(data.response);
+  //              console.log(data.response.venue.name);
+  //              console.log(data.response.venue.location.formattedAddress);
+  //            }
+  //    });
 
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
@@ -201,7 +175,7 @@ function populateInfoWindow(marker, infowindow) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = google.maps.geometry.spherical.computeHeading(
           nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Yelp Information </a></div>');
+          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Foursquare Information </a></div>');
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
