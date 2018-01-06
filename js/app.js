@@ -140,18 +140,18 @@ function restaurantData(data) {
 
   //  Foursquare Info
 
-  //  var clientID = '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
-  //  var    clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40',
-  //  $.ajax({
-  //          type: "GET",
-  //          dataType: 'json',
-  //          cache: false,
-  //          url: 'https://api.foursquare.com/v2/venues/' + restaurants.name + CLIENT_ID_Foursquare + CLIENT_SECRET_Foursquare + '&v=20130815',
-  //          async: true,
-  //          success: function(data) {
-  //              console.log(data.response);
-  //            }
-  //    });
+    var clientID = '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
+    var clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40',
+    $.ajax({
+            type: "GET",
+            dataType: 'json',
+            cache: false,
+            url: 'https://api.foursquare.com/v2/venues/' + restaurants.name + CLIENT_ID_Foursquare + CLIENT_SECRET_Foursquare + '&v=20130815',
+            async: true,
+            success: function(data) {
+                console.log(data.response);
+              }
+      });
 
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
