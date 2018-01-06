@@ -1,6 +1,6 @@
 var map;
 var markers = [];
-var contentString = ''
+var contentString = '';
 
 
 var restaurants = [
@@ -141,7 +141,7 @@ function restaurantData(data) {
   //  Foursquare Info
 
     var clientID = '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
-    var clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40',
+        clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40',;
     $.ajax({
             type: "GET",
             dataType: 'json',
@@ -168,39 +168,39 @@ function populateInfoWindow(marker, infowindow) {
     // In case the status is OK, which means the pano was found, compute the
     // position of the streetview image, then calculate the heading, then get a
     // panorama from that and set the options
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Foursquare Information </a></div>');
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 30
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
+function getStreetView(data, status) {
+  if (status == google.maps.StreetViewStatus.OK) {
+    var nearStreetViewLocation = data.location.latLng;
+    var heading = google.maps.geometry.spherical.computeHeading(
+      nearStreetViewLocation, marker.position);
+      infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Foursquare Information </a></div>');
+      var panoramaOptions = {
+          position: nearStreetViewLocation,
+                  pov: {
+          heading: heading,
+          pitch: 30
+        }
+      };
+    var panorama = new google.maps.StreetViewPanorama
           document.getElementById('pano'), panoramaOptions);
-      } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
+  } else {
+    infowindow.setContent('<div>' + marker.title + '</div>' +
+      '<div>No Street View Found</div>');
+  }
+}
     // Use streetview service to get the closest streetview image within
     // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+      streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
     // Open the infowindow on the correct marker.
-    infowindow.open(map, marker);
+      infowindow.open(map, marker);
   }
 }
 
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-    bounds.extend(markers[i].position);
+  for (var m = 0; m < markers.length; m++) {
+    markers[m].setMap(map);
+    bounds.extend(markers[m].position);
   }
   map.fitBounds(bounds);}
 
@@ -227,7 +227,7 @@ var myModel = function() {
 
   self.filter = function(title) {
     self.filterInput(title);
-  }
+  };
 
   this.currentRes = ko.observable(self.restaurantsList()[0]);
 
@@ -239,8 +239,8 @@ var myModel = function() {
       if (currentMarker.title == clickRes.title) {
         google.maps.event.trigger(this.markers[i], 'click');
       }
-    };
-  }
+    }
+  };
 
   restaurants.forEach(function(restaurantItem) {
     self.restaurantsList.push(new restaurantData(restaurantItem));
@@ -249,9 +249,9 @@ var myModel = function() {
   //ko computed to filter location list on text input
   self.filterrestaurants = ko.computed(function() {
     if (!self.filterInput()) {
-      for (i = 0; i < this.markers.length; i++) {
-        this.markers[i].setVisible(true);
-      };
+      for (r = 0; r < this.markers.length; r++) {
+        this.markers[r].setVisible(true);
+      }
       return self.restaurantsList();
     } else {
       var updatedMarkers = [];
@@ -266,10 +266,10 @@ var myModel = function() {
       }
       return ko.utils.arrayFilter(self.restaurantsList(), function(rests) {
         return rests.title.toLowerCase().includes(self.filterInput().toLowerCase());
-      })
+      });
     }
   }, this);
-}
+};
 
 ko.applyBindings(new myModel());
 
