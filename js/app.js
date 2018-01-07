@@ -121,11 +121,12 @@ function restaurantData(data) {
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setAnimation(google.maps.Animation.NULL);
-      }
-      this.setAnimation(google.maps.Animation.BOUNCE);
+      var self = this
+      self.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function() {
+          setAnimation(google.maps.Animation.NULL);
+      }, 1800);
+      populateInfoWindow(this, largeInfowindow);  
     });
 
     // Two event listeners - one for mouseover, one for mouseout,
