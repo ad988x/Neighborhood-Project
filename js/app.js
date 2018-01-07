@@ -108,26 +108,25 @@ function restaurantData(data) {
     var title = restaurants[i].title;
 
     // Create a marker per location, and put into markers array.
-
-
-    markers.push(marker);
-}
     var marker = new google.maps.Marker({
       position: position,
       title: title,
       animation: google.maps.Animation.DROP,
       icon: defaultIcon,
-      id: i
-    });
+      id: i});
+
+    markers.push(marker);
+}
+
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setAnimation(google.maps.Animation.BOUNCE);
-      }
-      this.setAnimation(google.maps.Animation.NULL);
-    });
+      var self = this
+      self.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
 
+      self.setAnimation(google.maps.Animation.NULL);
+    }, 180);
+    populateInfoWindow(this, largeInfowindow);
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
     marker.addListener('mouseover', function() {
@@ -136,6 +135,7 @@ function restaurantData(data) {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
+  }
 
 
 function makeMarkerIcon(markerColor) {
