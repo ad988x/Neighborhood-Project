@@ -108,6 +108,10 @@ function restaurantData(data) {
     var title = restaurants[i].title;
 
     // Create a marker per location, and put into markers array.
+
+
+    markers.push(marker);
+}
     var marker = new google.maps.Marker({
       position: position,
       title: title,
@@ -115,9 +119,6 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i
     });
-
-    markers.push(marker);
-}
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
