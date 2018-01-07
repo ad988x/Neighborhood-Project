@@ -115,11 +115,11 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i});
 
-    markers.push(marker)
+    markers.push(marker);
   }
 
     // Create an onclick event to open the large infowindow at each marker.
-    marker.addListener('click', function() {
+    restaurants[i].marker.addListener('click', function() {
       var self = this;
       self.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {
