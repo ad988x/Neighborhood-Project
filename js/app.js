@@ -117,7 +117,7 @@ function restaurantData(data) {
     });
 
     markers.push(marker);
-
+}
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
@@ -135,7 +135,7 @@ function restaurantData(data) {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
-}
+
 
 function makeMarkerIcon(markerColor) {
   var markerImage = new google.maps.MarkerImage(
