@@ -114,19 +114,19 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i
     });
-
+  }
     restaurants[i].marker = marker;
 
     // Push the marker to our array of markers.
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
-      var self = this
+      var self = this;
       self.setAnimation(google.maps.Animation.BOUNCE);
       setTimeout(function() {
           setAnimation(google.maps.Animation.NULL);
       }, 1800);
-      populateInfoWindow(this, largeInfowindow);  
+      populateInfoWindow(this, largeInfowindow);
     });
 
     // Two event listeners - one for mouseover, one for mouseout,
@@ -137,7 +137,7 @@ function restaurantData(data) {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
-  }
+
 
   //  Foursquare Info
 
