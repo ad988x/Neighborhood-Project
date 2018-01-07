@@ -117,15 +117,13 @@ function restaurantData(data) {
 
     markers.push(marker);
 
-
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
       var self = this;
       self.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {
-
       self.setAnimation(google.maps.Animation.NULL);
-    }, 180);
+    }, 1800);
     populateInfoWindow(this, largeInfowindow);
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
