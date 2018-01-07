@@ -176,9 +176,9 @@ function populateInfoWindow(marker, infowindow) {
 
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-    bounds.extend(markers[i].position);
+  for (var m = 0; m < markers.length; m++) {
+    markers[m].setMap(map);
+    bounds.extend(markers[m].position);
   }
   map.fitBounds(bounds);}
   function getStreetView(data, status) {
@@ -246,8 +246,8 @@ var myModel = function() {
   //ko computed to filter location list on text input
   self.filterrestaurants = ko.computed(function() {
     if (!self.filterInput()) {
-      for (i = 0; i < this.markers.length; i++) {
-        this.markers[i].setVisible(true);
+      for (r = 0; r < this.markers.length; r++) {
+        this.markers[r].setVisible(true);
       }
       return self.restaurantsList();
     } else {
