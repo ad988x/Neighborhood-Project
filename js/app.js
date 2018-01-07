@@ -101,7 +101,7 @@ function restaurantData(data) {
 
     var highlightedIcon = makeMarkerIcon('FFFF24');
   // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < restaurants.length; i++) {
+
     // Get the position from the location array.
     var position = restaurants[i].location;
     var title = restaurants[i].title;
@@ -114,7 +114,7 @@ function restaurantData(data) {
       icon: defaultIcon,
       id: i
     });
-  }
+
     restaurants[i].marker = marker;
 
     // Push the marker to our array of markers.
