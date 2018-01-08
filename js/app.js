@@ -5,12 +5,11 @@ var markers = [];
 var contentString = '';
 
 var restaurants = [
-    {title: 'Zias Restaurant & Catering', location: {lat: 38.615733, lng: -90.274971}},
-    {title: 'Charlie Gittos On the Hill', location: {lat: 38.617968, lng: -90.273455}},
-    {title: 'Gioias Deli', location: {lat: 38.617385, lng: -90.276820}},
-    {title: 'Mama Toscanos Ravoli', location: {lat: 38.614968, lng: -90.277693}},
-    {title: 'Rigazzis', location: {lat: 38.616569, lng: -90.268521}},
-    {title: 'Milos Tavern', location: {lat: 38.615865, lng: -90.273049}}
+    {title: 'Zias Restaurant & Catering', location: {lat: 38.615733, lng: -90.274971}, venueID: '4b685e9ef964a5205f742be3'},
+    {title: 'Charlie Gittos On the Hill', location: {lat: 38.617968, lng: -90.273455}, venueID: '4acbc3fcf964a5207fc620e3'},
+    {title: 'Gioias Deli', location: {lat: 38.617385, lng: -90.276820}, venueID: '4af193aff964a5206ee121e3'},
+    {title: 'Mama Toscanos Ravoli', location: {lat: 38.614968, lng: -90.277693}, venueID: '4c90fb9a51d9b1f7e1aa7c46'},
+    {title: 'Milos Tavern', location: {lat: 38.615865, lng: -90.273049}, venueID: '4b3e9b71f964a520ae9f25e3'}
   ];
 
 function restaurantData(data) {
@@ -102,7 +101,7 @@ function restaurantData(data) {
 
     var highlightedIcon = makeMarkerIcon('FFFF24');
   // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < locations.length; i++) {
+  for (var i = 0; i < restaurants.length; i++) {
     // Get the position from the location array.
     var position = restaurants[i].location;
     var title = restaurants[i].title;
@@ -116,16 +115,16 @@ function restaurantData(data) {
       id: i});
 
     markers.push(marker);
-  }
+
 
     // Create an onclick event to open the large infowindow at each marker.
-    restaurants[i].marker.addListener('click', function() {
-      var self = this;
-      self.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-      self.setAnimation(google.maps.Animation.NULL);
-    }, 1800);
-    populateInfoWindow(this, largeInfowindow);
+    marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfowindow);
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setAnimation(google.maps.Animation.NULL);
+      }
+      this.setAnimation(google.maps.Animation.BOUNCE);
+    });
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
     marker.addListener('mouseover', function() {
@@ -134,7 +133,7 @@ function restaurantData(data) {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
-  });
+}
 
 
 function makeMarkerIcon(markerColor) {
@@ -150,31 +149,12 @@ function makeMarkerIcon(markerColor) {
 
 var bounds = new google.maps.LatLngBounds();
 // Extend the boundaries of the map for each marker and display the marker
-for (var m = 0; m < markers.length; m++) {
-  markers[m].setMap(map);
-  bounds.extend(markers[m].position);
+for (var i = 0; i < markers.length; i++) {
+  markers[i].setMap(map);
+  bounds.extend(markers[i].position);
 }
 map.fitBounds(bounds);}
-function getStreetView(data, status) {
-  if (status == google.maps.StreetViewStatus.OK) {
-    var nearStreetViewLocation = data.location.latLng;
-    var heading = google.maps.geometry.spherical.computeHeading(
-      nearStreetViewLocation, marker.position);
-      infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div><div><a href=' + marker.title + '> Foursquare Information </a></div>');
-      var panoramaOptions = {
-          position: nearStreetViewLocation,
-                  pov: {
-          heading: heading,
-          pitch: 30
-        }
-      };
-    var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-  } else {
-    infowindow.setContent('<div>' + marker.title + '</div>' +
-      '<div>No Street View Found</div>');
-  }
-}
+
 
 
 function populateInfoWindow(marker, infowindow) {
@@ -187,31 +167,34 @@ function populateInfoWindow(marker, infowindow) {
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
     });
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 50;
+    // var streetViewService = new google.maps.StreetViewService();
+    // var radius = 50;
 
     // Use streetview service to get the closest streetview image within
     // 50 meters of the markers position
-      streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+      // streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
     // Open the infowindow on the correct marker.
       infowindow.open(map, marker);
   }
-}
+
   //  Foursquare Info
 
-    var clientID = '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
-        clientSecret = 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40';
+    var API = {
+        clientID: '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
+        clientSecret: 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40'
+      };
+
     $.ajax({
             type: "GET",
             dataType: 'json',
             cache: false,
-            url: 'https://api.foursquare.com/v2/venues/' + restaurants.name + clientID + clientSecret + '&v=20130815',
+            url: 'https://api.foursquare.com/v2/venues/search?' + 'll=' + restaurants.venueID + '&client_id=' + API.clientID + '&client_secret=' + API.clientSecret + '&v=20131016',
             async: true,
             success: function(data) {
                 console.log(data.response);
               }
       });
-
+}
 
 
 
