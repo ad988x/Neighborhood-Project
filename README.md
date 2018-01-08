@@ -1,6 +1,6 @@
 # Neighborhood-Project
 
-This project is to demonstrate atleast 6 or my favorite restaurants in the St. Hills Neighborhood.
+This project is to demonstrate atleast 5 or my favorite restaurants in the St. Hills Neighborhood.
 
 ## How to view this App
 
