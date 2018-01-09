@@ -70,13 +70,13 @@ input[type=text]:focus {
   padding-left: 23px;
 }
 
-.restaurantItems {
+.attractionItems {
   font-family: Comic Sans, Comic Sans MS, cursive;
   padding: 10px;
   font-size: 11pt;
  color: #FFFFFF;
 }
 
-#restaurantsList {
+#attractionsList {
   display: inline-block;
 }

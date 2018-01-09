@@ -9,16 +9,16 @@
   <body>
     <div class="container">
       <div class="options-box">
-        <h1>Restaurants On the Hill</h1>
+        <h1>Attractions in STL</h1>
         <hr>
         <div>
           <div class="filterSect">
-            <input class="restaurantFilter" data-bind="textInput: filterInput, valueUpdate: afterkeydown" placeholder="Filter Restaurants..." type="text">
+            <input class="attractionFilter" data-bind="textInput: filterInput, valueUpdate: afterkeydown" placeholder="Filter Acctractions..." type="text">
           </div>
         </div>
         <hr>
         <div>
-          <ul class="restaurantItems" data-bind="foreach: filterrestaurants">
+          <ul class="attractionItems" data-bind="foreach: filterattractions">
             <li><div><span data-bind="click: $parent.selectRes, text: title"></span></div>
             </li>
           </ul>

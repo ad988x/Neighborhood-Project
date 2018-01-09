@@ -4,17 +4,17 @@ var markers = [];
 
 var contentString = '';
 
-var restaurants = [
-    {title: 'Zias Restaurant & Catering', location: {lat: 38.615733, lng: -90.274971}, venueID: '4b685e9ef964a5205f742be3'},
-    {title: 'Charlie Gittos On the Hill', location: {lat: 38.617968, lng: -90.273455}, venueID: '4acbc3fcf964a5207fc620e3'},
-    {title: 'Gioias Deli', location: {lat: 38.617385, lng: -90.276820}, venueID: '4af193aff964a5206ee121e3'},
-    {title: 'Mama Toscanos Ravoli', location: {lat: 38.614968, lng: -90.277693}, venueID: '4c90fb9a51d9b1f7e1aa7c46'},
-    {title: 'Milos Tavern', location: {lat: 38.615865, lng: -90.273049}, venueID: '4b3e9b71f964a520ae9f25e3'}
+var attractions = [
+    {title: 'Gateway Arch', location: {lat: 38.624691, lng: -90.184776}, img: 'pics/Arch.jpg'},
+    {title: 'Busch Stadium', location: {lat: 38.622619, lng: -90.192821}, img: 'pics/Busch.jpg'},
+    {title: 'Scottrade Center', location: {lat: 38.626840, lng: -90.202678}, img: 'pics/Scottrade.jpg'},
+    {title: 'St. Louis Ballpark Village', location: {lat: 38.623904, lng: -90.191913}, img: 'pics/BP_Village.jpg'},
+    {title: 'City Museum', location: {lat: 38.633636, lng: -90.200551}, img: 'pics/City_Museum.jpg'}
   ];
 
-function restaurantData(data) {
+function attractionData(data) {
     this.title = data.title;
-    this.restaurants = data.restaurants;
+    this.attractions = data.attractions;
 }
 
   function initMap() {
@@ -85,9 +85,9 @@ function restaurantData(data) {
         ]
       }
     ];
-    // Creating a new map for Italian Restaurants in South St. louis Hills
+    // Creating a new map for St. Louis Attractions I enjoy
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 38.616192, lng: -90.277265},
+      center: {lat: 38.629013, lng: -90.197812},
       zoom: 17,
       styles: styles,
       mapTypeControl: false
@@ -101,15 +101,17 @@ function restaurantData(data) {
 
     var highlightedIcon = makeMarkerIcon('FFFF24');
   // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < restaurants.length; i++) {
+  for (var i = 0; i < attractions.length; i++) {
     // Get the position from the location array.
-    var position = restaurants[i].location;
-    var title = restaurants[i].title;
+    var position = attractions[i].location;
+    var title = attractions[i].title;
+    var img = attractions[i].img;
 
     // Create a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
       position: position,
       title: title,
+      img: img,
       animation: google.maps.Animation.DROP,
       icon: defaultIcon,
       id: i});
@@ -156,46 +158,44 @@ for (var i = 0; i < markers.length; i++) {
 map.fitBounds(bounds);}
 
 
+//followed discussion.udacity.com to complete the picture aspect of this wikipedia api.
+function populateInfoWindow(marker,infowindow) {
+    		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
+		    var wikiRequestTimeout = setTimeout(function(){
+		    	alert("failed to get wikipedia resources")
+		    }, 10000);
+		    var articleStr;
+    		var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
+    		$.ajax({
+    			url: marker.url,
+    			dataType: "jsonp",
+    			//jsonp : "callback",
+		    	success: function(response) {//response is a javascript object
+		    		var articleList = response[1];
 
-function populateInfoWindow(marker, infowindow) {
-  // Check to make sure the infowindow is not already opened on this marker.
-  if (infowindow.marker != marker) {
-    // Clear the infowindow content to give the streetview time to load.
-    infowindow.setContent('');
-    infowindow.marker = marker;
-    // Make sure the marker property is cleared if the infowindow is closed.
-    infowindow.addListener('closeclick', function() {
-      infowindow.marker = null;
-    });
-    // var streetViewService = new google.maps.StreetViewService();
-    // var radius = 50;
+		    		for(var i = 0; i < articleList.length; i++) {
+		    			articleStr = articleList[i];
+		    			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+		    			contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
+		    		};
+		    		//clearTimeout(wikiRequestTimeout);
+		    	}
+		    });
 
-    // Use streetview service to get the closest streetview image within
-    // 50 meters of the markers position
-      // streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    // Open the infowindow on the correct marker.
-      infowindow.open(map, marker);
-  }
-
-  //  Foursquare Info
-
-    var API = {
-        clientID: '2YV0OH4UNUF3V5HYRPHGFF2U0ZF4DUIQ0L34SX4M1ZZMCHXN',
-        clientSecret: 'LBPWRT5C3W5J3EET5MKUFIGGPW53D0UNRV1YS4XN30QJBX40'
-      };
-
-    $.ajax({
-            type: "GET",
-            dataType: 'json',
-            cache: false,
-            url: 'https://api.foursquare.com/v2/venues/search?' + 'll=' + restaurants.venueID + '&client_id=' + API.clientID + '&client_secret=' + API.clientSecret + '&v=20131016',
-            async: true,
-            success: function(data) {
-                console.log(data.response);
-              }
-      });
-}
-
+    		if (infowindow.marker != marker) {
+				infowindow.marker = marker;
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+        		setTimeout(function(){
+          			marker.setAnimation(null);
+        		}, 8000);
+        		infowindow.setContent(contentString);
+				infowindow.open(map, marker);
+				// Make sure the marker property is cleared if the infowindow is closed.
+				infowindow.addListener('closeclick',function(){
+					infowindow.setMarker = null;
+          		});
+        	}
+    	}
 
 
 var myModel = function() {
@@ -203,7 +203,7 @@ var myModel = function() {
 
   this.markers = markers;
 
-  this.restaurantsList = ko.observableArray([]);
+  this.attractionsList = ko.observableArray([]);
 
   this.filterInput = ko.observable();
 
@@ -211,7 +211,7 @@ var myModel = function() {
     self.filterInput(title);
   };
 
-  this.currentRes = ko.observable(self.restaurantsList()[0]);
+  this.currentRes = ko.observable(self.attractionsList()[0]);
 
   this.selectRes = function(clickRes) {
     self.currentRes(clickRes);
@@ -224,17 +224,17 @@ var myModel = function() {
     }
   };
 
-  restaurants.forEach(function(restaurantItem) {
-    self.restaurantsList.push(new restaurantData(restaurantItem));
+  attractions.forEach(function(attractionItem) {
+    self.attractionsList.push(new attractionData(attractionItem));
   });
 
   //ko computed to filter location list on text input
-  self.filterrestaurants = ko.computed(function() {
+  self.filterattractions = ko.computed(function() {
     if (!self.filterInput()) {
       for (r = 0; r < this.markers.length; r++) {
         this.markers[r].setVisible(true);
       }
-      return self.restaurantsList();
+      return self.attractionsList();
     } else {
       var updatedMarkers = [];
       for (var i = 0; i < this.markers.length; i++) {
@@ -246,7 +246,7 @@ var myModel = function() {
           this.markers[i].setVisible(false);
         }
       }
-      return ko.utils.arrayFilter(self.restaurantsList(), function(rests) {
+      return ko.utils.arrayFilter(self.attractionsList(), function(rests) {
         return rests.title.toLowerCase().includes(self.filterInput().toLowerCase());
       });
     }
