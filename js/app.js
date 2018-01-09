@@ -162,8 +162,7 @@ map.fitBounds(bounds);}
 function populateInfoWindow(marker,infowindow) {
     		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
-		    	alert("failed to get wikipedia resources")
-		    }, 10000);
+		    	alert("failed to get wikipedia page for more information")
 		    var articleStr;
     		var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
     		$.ajax({
