@@ -151,9 +151,9 @@ function makeMarkerIcon(markerColor) {
 
 var bounds = new google.maps.LatLngBounds();
 // Extend the boundaries of the map for each marker and display the marker
-for (var i = 0; i < markers.length; i++) {
-  markers[i].setMap(map);
-  bounds.extend(markers[i].position);
+for (var m = 0; m < markers.length; m++) {
+  markers[m].setMap(map);
+  bounds.extend(markers[m].position);
 }
 map.fitBounds(bounds);
 
@@ -168,7 +168,8 @@ function populateInfoWindow(marker, infowindow) {
             marker.setAnimation(google.maps.Animation.null);
 
           });
-    		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
+        var wikiSite = '';
+        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
 		    	infowindow.setContent("failed to get wikipedia page for more information");
 		    }, 10000);
@@ -183,11 +184,12 @@ function populateInfoWindow(marker, infowindow) {
 		    		for(i = 0; i < articleList.length; i++) {
 		    			articleStr = articleList[i];
 		    			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+              wikiSite = url
 		    			//contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
-		    		};
+		    		}
 		    		//clearTimeout(wikiRequestTimeout);
             clearTimeout(wikiRequestTimeout);
-            infowindow.setContent('<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>' + '<a href=\"' + url + '\">' + "Click Here for Wikipedia Information" + '</a>')
+            infowindow.setContent('<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>' + '<a href=\"' + wikiSite + '\">' + "Click Here for Wikipedia Information" + '</a>');
 		    	}
           		});
 
