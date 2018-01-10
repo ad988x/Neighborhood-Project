@@ -159,42 +159,39 @@ map.fitBounds(bounds);
 
 
 //followed discussion.udacity.com to complete the picture aspect of this wikipedia api.
-function populateInfoWindow(marker,infowindow) {
+function populateInfoWindow(marker, infowindow) {
+        if (infowindow.marker != marker) {
+          infowindow.setContent('');
+          infowindow.marker = marker;
+          infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+            marker.setAnimation(google.maps.Animation.null);
+
+          });
     		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
-		    	infowindow.setContent("failed to get wikipedia page for more information")
+		    	infowindow.setContent("failed to get wikipedia page for more information");
 		    }, 10000);
-		    var articleStr;
-    		var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
+    		//var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
     		$.ajax({
-    			url: marker.url,
+    			url: wikiUrl,
     			dataType: "jsonp",
     			//jsonp : "callback",
 		    	success: function(response) {//response is a javascript object
 		    		var articleList = response[1];
 
-		    		for(var i = 0; i < articleList.length; i++) {
+		    		for(i = 0; i < articleList.length; i++) {
 		    			articleStr = articleList[i];
 		    			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-		    			contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
+		    			//contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
 		    		};
 		    		//clearTimeout(wikiRequestTimeout);
             clearTimeout(wikiRequestTimeout);
-            infowindow.setContent(contentString)
+            infowindow.setContent('<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>' + '<a href=\"' + url + '\">' + "Click Here for Wikipedia Information" + '</a>')
 		    	}
-		    });
-
-    		if (infowindow.marker != marker) {
-				infowindow.marker = marker;
-				marker.setAnimation(google.maps.Animation.BOUNCE);
-        		setTimeout(function(){
-          			marker.setAnimation(null);
-        		}, 8000);
-        		infowindow.setContent(contentString);
-				infowindow.open(map, marker);
-				infowindow.addListener('closeclick',function(){
-					infowindow.setMarker = null;
           		});
+
+          infowindow.open(map, marker);
         	}
     	}
 }
