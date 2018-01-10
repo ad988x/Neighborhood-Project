@@ -94,12 +94,14 @@ function attractionData(data) {
     });
 
 
-    var largeInfowindow = new google.maps.InfoWindow();
+  var largeInfowindow = new google.maps.InfoWindow();
 
+
+  var bounds = new google.maps.LatLngBounds();
     // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('1B965E');
+  var defaultIcon = makeMarkerIcon('1B965E');
 
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+  var highlightedIcon = makeMarkerIcon('FFFF24');
   // The following group uses the location array to create an array of markers on initialize.
   for (var i = 0; i < attractions.length; i++) {
     // Get the position from the location array.
@@ -112,28 +114,38 @@ function attractionData(data) {
       position: position,
       title: title,
       img: img,
+      map: map,
       animation: google.maps.Animation.DROP,
       icon: defaultIcon,
       id: i});
 
     markers.push(marker);
-    marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
-      for (var i = 0; i < markers.length; i++) {
+
+    marker.addListener('click', openInfoWindow);
+    marker.addListener('mouseover', mouseOver);
+    marker.addListener('mouseout', mouseOut);
+  }
+  function openInfoWindow() {
+    populateInfoWindow(this, largeInfowindow);
+    for (var i = 0; i < markers.length; i++) {
         markers[i].setAnimation(google.maps.Animation.NULL);
       }
-      this.setAnimation(google.maps.Animation.BOUNCE);
-    });
-    // Two event listeners - one for mouseover, one for mouseout,
-    // to change the colors back and forth.
-    marker.addListener('mouseover', function() {
-      this.setIcon(highlightedIcon);
-    });
-    marker.addListener('mouseout', function() {
-      this.setIcon(defaultIcon);
-    });
-}
+    this.setAnimation(google.maps.Animation.BOUNCE);
+    }
 
+  function mouseOver() {
+    this.setIcon(highlightedIcon);
+    }
+  function mouseOut() {
+      this.setIcon(defaultIcon);
+    }
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+      bounds.extend(markers[i].position);
+    }
+  map.fitBounds(bounds);
+
+}
 
 function makeMarkerIcon(markerColor) {
   var markerImage = new google.maps.MarkerImage(
@@ -146,15 +158,6 @@ function makeMarkerIcon(markerColor) {
   return markerImage;
 }
 
-var bounds = new google.maps.LatLngBounds();
-// Extend the boundaries of the map for each marker and display the marker
-for (var m = 0; m < markers.length; m++) {
-  markers[m].setMap(map);
-  bounds.extend(markers[m].position);
-}
-map.fitBounds(bounds);
-
-
 //followed discussion.udacity.com to complete the picture aspect of this wikipedia api.
 function populateInfoWindow(marker, infowindow) {
         if (infowindow.marker != marker) {
@@ -162,8 +165,6 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.marker = marker;
           infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
-            marker.setAnimation(google.maps.Animation.null);
-
           });
         var wikiSite = '';
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
@@ -193,7 +194,7 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.open(map, marker);
         	}
     	}
-}
+
 
 var myModel = function() {
   var self = this;
