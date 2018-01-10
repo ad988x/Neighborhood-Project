@@ -162,7 +162,7 @@ map.fitBounds(bounds);
 function populateInfoWindow(marker,infowindow) {
     		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
-		    	alert("failed to get wikipedia page for more information")
+		    	infowindow.setContent("failed to get wikipedia page for more information")
 		    }, 10000);
 		    var articleStr;
     		var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
@@ -179,6 +179,8 @@ function populateInfoWindow(marker,infowindow) {
 		    			contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
 		    		};
 		    		//clearTimeout(wikiRequestTimeout);
+            clearTimeout(wikiRequestTimeout);
+            infowindow.setContent(contentString)
 		    	}
 		    });
 
@@ -190,7 +192,6 @@ function populateInfoWindow(marker,infowindow) {
         		}, 8000);
         		infowindow.setContent(contentString);
 				infowindow.open(map, marker);
-				// Make sure the marker property is cleared if the infowindow is closed.
 				infowindow.addListener('closeclick',function(){
 					infowindow.setMarker = null;
           		});
