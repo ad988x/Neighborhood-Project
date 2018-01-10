@@ -139,9 +139,9 @@ function attractionData(data) {
   function mouseOut() {
       this.setIcon(defaultIcon);
     }
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(map);
-      bounds.extend(markers[i].position);
+    for (var m = 0; m < markers.length; m++) {
+      markers[m].setMap(map);
+      bounds.extend(markers[m].position);
     }
   map.fitBounds(bounds);
 
