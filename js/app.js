@@ -117,9 +117,6 @@ function attractionData(data) {
       id: i});
 
     markers.push(marker);
-
-
-    // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
       for (var i = 0; i < markers.length; i++) {
@@ -184,7 +181,7 @@ function populateInfoWindow(marker, infowindow) {
 		    		for(i = 0; i < articleList.length; i++) {
 		    			articleStr = articleList[i];
 		    			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-              wikiSite = url
+              wikiSite = url;
 		    			//contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
 		    		}
 		    		//clearTimeout(wikiRequestTimeout);
