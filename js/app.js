@@ -155,7 +155,7 @@ for (var i = 0; i < markers.length; i++) {
   markers[i].setMap(map);
   bounds.extend(markers[i].position);
 }
-map.fitBounds(bounds);}
+map.fitBounds(bounds);
 
 
 //followed discussion.udacity.com to complete the picture aspect of this wikipedia api.
@@ -163,6 +163,7 @@ function populateInfoWindow(marker,infowindow) {
     		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
 		    	alert("failed to get wikipedia page for more information")
+		    }, 10000);
 		    var articleStr;
     		var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
     		$.ajax({
@@ -195,7 +196,7 @@ function populateInfoWindow(marker,infowindow) {
           		});
         	}
     	}
-
+}
 
 var myModel = function() {
   var self = this;
@@ -212,7 +213,7 @@ var myModel = function() {
 
   this.currentRes = ko.observable(self.attractionsList()[0]);
 
-  this.selectRes = function(clickRes) {
+  this.selectAtr = function(clickRes) {
     self.currentRes(clickRes);
     this.markers = markers;
     for (var i = 0; i < this.markers.length; i++) {
