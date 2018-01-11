@@ -5,7 +5,27 @@ body {
   margin: 0;
   padding: 0;
 }
-
+.btn{
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
 .container {
   height: 100%;
   position: relative;
@@ -50,6 +70,7 @@ hr {
   width: 20%;
   font-weight: bold;
   z-index: 2;
+  overflow: scroll;
 }
 #pano {
   width: 200px;
@@ -60,8 +81,8 @@ hr {
   display: inline-block;
 }
 .filterSect {
-  padding-left: 10px;
-  padding-top: 10px;
+  padding-left: 0px;
+  padding-top: 0px;
   text-align: center;
 }
 
@@ -84,6 +105,10 @@ input[type=text]:focus {
   padding: 10px;
   font-size: 11pt;
  color: #FFFFFF;
+}
+
+.attractionFilter {
+  width: 100%;
 }
 
 #attractionsList {
@@ -128,6 +153,7 @@ li {
     width: 20%;
     font-weight: bold;
     z-index: 2;
+    overflow: scroll;
   }
   #pano {
     width: 200px;
@@ -138,8 +164,8 @@ li {
     display: inline-block;
   }
   .filterSect {
-    padding-left: 10px;
-    padding-top: 10px;
+    padding-left: 0px;
+    padding-top: 0px;
     text-align: left;
     display: inline-block;
   }
@@ -149,8 +175,8 @@ li {
     transition: width 0.4s ease-in-out;
     background-repeat: no-repeat;
     background-size: 20px 20px;
-    width: 60%;
-    padding-left: 23px;
+    width: 100%;
+    padding-left: 0px;
   }
 
   input[type=text]:focus {
@@ -167,6 +193,10 @@ li {
 
   #attractionsList {
     display: inline-block;
+  }
+
+  .attractionFilter {
+    width: 100%;
   }
 
 }
@@ -209,6 +239,7 @@ li {
     width: 20%;
     font-weight: bold;
     z-index: 2;
+    overflow: scroll;
   }
   #pano {
     width: 200px;
@@ -219,8 +250,6 @@ li {
     display: inline-block;
   }
   .filterSect {
-    padding-left: 10px;
-    padding-top: 10px;
     text-align: left;
     display: inline-block;
   }
@@ -230,8 +259,8 @@ li {
     transition: width 0.4s ease-in-out;
     background-repeat: no-repeat;
     background-size: 20px 20px;
-    width: 60%;
-    padding-left: 23px;
+    width: 100%;
+    padding-left: 0px;
   }
 
   input[type=text]:focus {
@@ -245,7 +274,9 @@ li {
     font-size: 11pt;
    color: #FFFFFF;
   }
-
+  .attractionFilter {
+    width: 100%;
+  }
   #attractionsList {
     display: inline-block;
   }

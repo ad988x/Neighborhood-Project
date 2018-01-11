@@ -6,10 +6,10 @@ var contentString = '';
 
 var attractions = [
     {title: 'Gateway Arch', location: {lat: 38.624691, lng: -90.184776}, img: 'pics/Arch.jpg'},
-    {title: 'Busch Stadium', location: {lat: 38.622619, lng: -90.192821}, img: 'pics/Busch.jpg'},
-    {title: 'Scottrade Center', location: {lat: 38.626840, lng: -90.202678}, img: 'pics/Scottrade.jpg'},
+    {title: 'Old Courthouse (St. Louis)', location: {lat: 38.625674, lng: -90.189274}, img: 'pics/Courthouse.jpg'},
+    {title: 'Lumière Place Casino & Hotels', location: {lat: 38.633392, lng: -90.184488}, img: 'pics/Lumiere_Place.jpg'},
     {title: 'St. Louis Ballpark Village', location: {lat: 38.623904, lng: -90.191913}, img: 'pics/BP_Village.jpg'},
-    {title: 'City Museum', location: {lat: 38.633636, lng: -90.200551}, img: 'pics/City_Museum.jpg'}
+    {title: 'St. Louis City Museum', location: {lat: 38.633636, lng: -90.200551}, img: 'pics/City_Museum.jpg'}
   ];
 
 function attractionData(data) {
@@ -128,7 +128,7 @@ function attractionData(data) {
   function openInfoWindow() {
     populateInfoWindow(this, largeInfowindow);
     for (var i = 0; i < markers.length; i++) {
-        markers[i].setAnimation(google.maps.Animation.NULL);
+      markers[i].setAnimation(google.maps.Animation.NULL);
       }
     this.setAnimation(google.maps.Animation.BOUNCE);
     }
@@ -164,10 +164,13 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.setContent('');
           infowindow.marker = marker;
           infowindow.addListener('closeclick', function() {
+            setTimeout(function() {
+                        marker.setAnimation(null);
+                      }, 3000);
             infowindow.marker = null;
           });
         var wikiSite = '';
-        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title +'&format=json&callback=wikiCallback';
+        var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title  + '&format=json&callback=wikiCallback';
 		    var wikiRequestTimeout = setTimeout(function(){
 		    	infowindow.setContent("failed to get wikipedia page for more information");
 		    }, 10000);
