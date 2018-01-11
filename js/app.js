@@ -87,8 +87,8 @@ function attractionData(data) {
     ];
     // Creating a new map for St. Louis Attractions I enjoy
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 38.629013, lng: -90.197812},
-      zoom: 17,
+      center: {lat: 38.628344, lng: -90.194970},
+      zoom: 16,
       styles: styles,
       mapTypeControl: false
     });
@@ -143,8 +143,10 @@ function attractionData(data) {
       markers[m].setMap(map);
       bounds.extend(markers[m].position);
     }
-  map.fitBounds(bounds);
 
+    google.maps.event.addDomListener(window, 'resize', function() {
+      map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
+    });
 }
 
 function makeMarkerIcon(markerColor) {
@@ -171,9 +173,7 @@ function populateInfoWindow(marker, infowindow) {
           });
         var wikiSite = '';
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title  + '&format=json&callback=wikiCallback';
-		    var wikiRequestTimeout = setTimeout(function(){
-		    	infowindow.setContent("failed to get wikipedia page for more information");
-		    }, 10000);
+		    //var wikiRequestTimeout =
     		//var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
     		$.ajax({
     			url: wikiUrl,
@@ -189,9 +189,12 @@ function populateInfoWindow(marker, infowindow) {
 		    			//contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
 		    		}
 		    		//clearTimeout(wikiRequestTimeout);
-            clearTimeout(wikiRequestTimeout);
+            //clearTimeout(wikiRequestTimeout);
             infowindow.setContent('<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>' + '<a href=\"' + wikiSite + '\">' + "Click Here for Wikipedia Information" + '</a>');
-		    	}
+            setTimeout(function(){
+    		    	infowindow.setContent("failed to get wikipedia page for more information");
+    		    }, 10000);
+          }
           		});
 
           infowindow.open(map, marker);
@@ -199,7 +202,7 @@ function populateInfoWindow(marker, infowindow) {
     	}
 
 
-var myModel = function() {
+var MyModel = function() {
   var self = this;
 
   this.markers = markers;
@@ -254,7 +257,7 @@ var myModel = function() {
   }, this);
 };
 
-ko.applyBindings(new myModel());
+ko.applyBindings(new MyModel());
 
 function errorHandling() {
   alert("Google Maps has failed to load.");
