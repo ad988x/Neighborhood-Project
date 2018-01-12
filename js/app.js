@@ -173,13 +173,15 @@ function populateInfoWindow(marker, infowindow) {
           });
         var wikiSite = '';
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title  + '&format=json&callback=wikiCallback';
-		    //var wikiRequestTimeout =
+		    var wikiRequestTimeout = setTimeout(function(){
+		    	infowindow.setContent("failed to get wikipedia page for more information");
+        }, 1000);
     		//var contentString = '<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>';
     		$.ajax({
     			url: wikiUrl,
     			dataType: "jsonp",
     			//jsonp : "callback",
-		    	success: function(response) {//response is a javascript object
+        }).done(function(response) {//response is a javascript object
 		    		var articleList = response[1];
 
 		    		for(i = 0; i < articleList.length; i++) {
@@ -189,13 +191,13 @@ function populateInfoWindow(marker, infowindow) {
 		    			//contentString = contentString + '<a href=\"' + url + '\">' + url + '</a>' + '<br>';
 		    		}
 		    		//clearTimeout(wikiRequestTimeout);
-            //clearTimeout(wikiRequestTimeout);
+            clearTimeout(wikiRequestTimeout);
             infowindow.setContent('<h3>' + marker.title + '</h3>' + '<img src="' + marker.img + '" height=\"100px\" width=\"200px\">' + '<br>' + '<a href=\"' + wikiSite + '\">' + "Click Here for Wikipedia Information" + '</a>');
-            setTimeout(function(){
-    		    	infowindow.setContent("failed to get wikipedia page for more information");
-    		    }, 10000);
-          }
-          		});
+
+
+        }).fail(function () {
+            wikiRequestTimeout();
+        });
 
           infowindow.open(map, marker);
         	}
